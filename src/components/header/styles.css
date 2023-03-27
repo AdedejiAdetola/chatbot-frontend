@@ -1,0 +1,11 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0 30px;
+}
+.image-bot{
+    width: 80px;
+    border-radius: 50%;
+    margin-left: 50px;
+}
