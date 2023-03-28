@@ -11,11 +11,11 @@ const Chat = ({ socket }) => {
         if (currentMessage !== '') {
             const messageData = {
                 message: currentMessage,
-                time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
+                time: String(new Date(Date.now()).getHours()).padStart(2,0) + ":" + String(new Date(Date.now()).getMinutes()).padStart(2,0)
             };
 
             await socket.emit('send_message', messageData);
-            setMessageList((list) => [...list, messageData.message]);
+            setMessageList((list) => [...list, messageData]);
         }
     }
     
@@ -24,14 +24,26 @@ const Chat = ({ socket }) => {
             //console.log('receive message', data)
             setMessageList((list) => [...list, data]);
         })
+        return function cleanup() {socket.off('receive_message')}
     }, [socket])
+
     console.log(messageList)
     return ( 
         <div>
             <div className='chat-body'>
                {
                 messageList.map((eachMessage) => {
-                    return <h1 key={messageList.indexOf(eachMessage)}>{eachMessage}</h1>
+                    return (
+
+                        <div>
+                            
+                            <h1 key={messageList.indexOf(eachMessage)}>{eachMessage.message}</h1>
+                            <h2>
+                                {eachMessage.time}
+                            </h2>
+                        </div>
+                        
+                    )
                 })
                 
                } 
