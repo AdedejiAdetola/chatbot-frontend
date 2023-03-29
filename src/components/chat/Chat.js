@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import './styles.css'
 
 
 const Chat = ({ socket }) => {
@@ -11,7 +12,8 @@ const Chat = ({ socket }) => {
         if (currentMessage !== '') {
             const messageData = {
                 message: currentMessage,
-                time: String(new Date(Date.now()).getHours()).padStart(2,0) + ":" + String(new Date(Date.now()).getMinutes()).padStart(2,0)
+                time: String(new Date(Date.now()).getHours()).padStart(2,0) + ":" + String(new Date(Date.now()).getMinutes()).padStart(2,0),
+                you: true
             };
 
             await socket.emit('send_message', messageData);
@@ -29,18 +31,17 @@ const Chat = ({ socket }) => {
 
     console.log(messageList)
     return ( 
-        <div>
+        <div className='contained'>
             <div className='chat-body'>
                {
                 messageList.map((eachMessage) => {
                     return (
 
-                        <div>
-                            
-                            <h1 key={messageList.indexOf(eachMessage)}>{eachMessage.message}</h1>
-                            <h2>
+                        <div className={`${eachMessage.you ? 'you' : 'bot'}`}>
+                            <p className='content'>{eachMessage.message}</p>
+                            <p className='time'>
                                 {eachMessage.time}
-                            </h2>
+                            </p>
                         </div>
                         
                     )
